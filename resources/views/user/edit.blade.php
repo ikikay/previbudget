@@ -25,6 +25,7 @@
 {!! Form::label('password', 'Mot de passe') !!}
 <input id="password" type="password" class="form-control" name="password" value="" >
 
+<?php $color = $leUser->color_theme; ?>
 <div class="form-group">
     <label for="color" class="form-label">Couleur</label>
 
@@ -43,4 +44,13 @@
 {!! Form::submit('Valider', ['class'=> 'btn bg-' . Auth::user()->color_item .' btn-lg btn-block']) !!}
 
 {!! Form::close()!!}
+@stop
+
+
+@section('script')
+<script>
+    var couleur = "{{ $color }}";
+    console.log("Selection automatique de {{ $color }}");
+    $('select:first').val(couleur);
+</script>
 @stop

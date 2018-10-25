@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Models\User;
+use App\Models\Compte;
 
 class CompteController extends Controller {
 
@@ -21,7 +25,10 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //
+        $lesComptes = Compte::where('user_id', "=", Auth::user()->id)->get();
+
+        return view('compte.index')
+                        ->with('tab_comptes', $lesComptes);
     }
 
     /**
@@ -30,7 +37,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        return view('compte.create');
     }
 
     /**
@@ -40,7 +47,16 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $request->session()->flash('success', 'Le compte à été Ajouté !');
+
+        //$leUser = User::find($request->get('idUser'));
+        $leCompte = new Compte();
+        $leCompte->user_id = $request->get('user_id');
+        $leCompte->libelle = $request->get('libelle');
+        
+        $leCompte->save();
+        
+        return redirect()->route("compte.index");
     }
 
     /**
@@ -60,7 +76,10 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        $leCompte = Compte::find($id);
+
+        return view('compte.edit')
+                        ->with("leCompte", $leCompte);
     }
 
     /**
@@ -71,7 +90,13 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $leCompte = User::find($id);
+
+        $leCompte->libelle = $request->get('libelle');
+
+        $leCompte->save();
+
+        return redirect()->route("compte.index");
     }
 
     /**
@@ -80,8 +105,14 @@ class CompteController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request, $id) {
+        $request->session()->flash('success', 'Le compte à été Supprimé !');
+
+        $leCompte = Compte::find($id);
+
+        $leCompte->delete();
+
+        return redirect()->route("compte.index");
     }
 
 }

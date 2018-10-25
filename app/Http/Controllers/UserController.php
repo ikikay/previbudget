@@ -45,7 +45,6 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        info('Store d\'User');
         $request->session()->flash('success', 'L\'utilisateur à été Ajouté !');
         
         $colorItem = "";
@@ -103,7 +102,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $leUser = user::find($id);
+        $leUser = User::find($id);
 
         return view('user.edit')
                         ->with("leUser", $leUser);
@@ -169,9 +168,9 @@ class UserController extends Controller {
     public function destroy(Request $request, $id) {
         $request->session()->flash('success', 'L\'utilisateur à été Supprimé !');
 
-        $user = User::find($id);
+        $leUser = User::find($id);
 
-        $user->delete();
+        $leUser->delete();
 
         return redirect()->route("user.index");
     }

@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="{{url('css/skins/skin-' . Auth::user()->color_theme . '.min.css') }}">
 
         <link rel="stylesheet" href="{{url('css/style_back.css') }}" >
-        
+
         @yield('css')
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -66,7 +66,6 @@
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg">PRÉVI<b>BUDGET</b></span>
                 </a>
-
 
                 <!-- Header Navbar -->
                 <nav class="navbar navbar-static-top" role="navigation">
@@ -130,31 +129,31 @@
                     </div>
 
                     <!-- Sidebar Menu -->
-                    <ul class="sidebar-menu">
+                    <ul class="sidebar-menu" data-widget="tree">
+
                         <li class="header">Menu principal</li>
                         <!-- Optionally, you can add icons to the links -->
+
+                        <li>
+                            <a href="{{ route("compte.index") }}"><i class="fa fa-bank"></i> <span>Mes comptes</span> <span class="pull-right-container"></span> </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route("dashboard") }}"><i class="fa fa-genderless"></i> <span>Mono Link TODO</span> <span class="pull-right-container"></span> </a>
+                        </li>
+
+                        <li class="header">Admin</li>
+
                         <li class="treeview">
-                            <a href="#"><i class="fa fa-list-alt"></i> <span>Comptes</span>
+                            <a href="#"><i class="fa fa-users"></i><span>Utilisateurs</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
-                            <ul class="treeview-menu">
-                                <li><a href="{{ route("compte.create") }}">Ajouter</a></li>
-                                <li><a href="{{ route("compte.index") }}">Administrer</a></li>
+                            <ul class="treeview-menu">                            
+                                <li><a href="{{ route("user.create") }}"><i classe="fa fa-circle-o"></i>Ajouter</a></li>
+                                <li><a href="{{ route("user.index") }}"><i classe="fa fa-circle-o"></i>Administrer</a></li>
                             </ul>	
-
-                        </li>
-
-                        <li class="treeview">
-                            <a href="{{ route("dashboard") }}"><i class="fa fa-picture-o"></i> <span>Mono Link TODO</span>  </a>
-                        </li>
-
-
-                        <li class="header">Séparation</li>
-
-                        <li class="treeview">
-                            <a href="{{ route("dashboard") }}"><i class="fa fa-picture-o"></i> <span>Mono Link TODO</span>  </a>
                         </li>
 
                     </ul>
