@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Color;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller {
     /*
@@ -59,29 +62,6 @@ use RegistersUsers;
      * @return App\Models\User
      */
     protected function create(array $data) {
-        $colorItem = "";
-        switch ($data['color']) {
-            case "blue":
-                $colorItem = "blue";
-                break;
-            case "yellow":
-                $colorItem = "orange";
-                break;
-            case "green":
-                $colorItem = "olive";
-                break;
-            case "purple":
-                $colorItem = "purple";
-                break;
-            case "red":
-                $colorItem = "maroon";
-                break;
-            case "black":
-                $colorItem = "navy";
-                break;
-            default:
-                $colorItem = "blue";
-        }
 
         return User::create([
                     'pseudo' => $data['pseudo'],
@@ -89,9 +69,46 @@ use RegistersUsers;
                     'prenom' => $data['prenom'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
-                    'color_theme' => $data['color'],
-                    'color_item' => $colorItem,
         ]);
+    }
+
+    // - - - - - OVERRIDE - - - - -
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm() {
+        $leUser = new User();
+        $lesCouleurs = Color::all();
+
+        return view('auth.register')
+                        ->with("leUser", $leUser)
+                        ->with("lesCouleurs", $lesCouleurs);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request) {
+        $this->validate($request, User::$rulesOnCreate);
+
+        $user = User::create([
+            'pseudo' => $request->get('pseudo'),
+            'nom' => $request->get('nom'),
+            'prenom' => $request->get('prenom'),
+            'email' => $request->get('email'),
+            'password' => bcrypt($request->get('password')),
+            'avatar' => $request->get('avatar'),
+            'color_id' => $request->get('color_id'),
+        ]);
+
+        $this->guard()->login($user);
+
+        return redirect()->route("home");
     }
 
 }

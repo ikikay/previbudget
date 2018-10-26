@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
+use App\Models\Color;
 
 class UserController extends Controller {
 
@@ -35,7 +36,12 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('user.create');
+        $leUser = new User();
+        $lesCouleurs = Color::all();
+
+        return view('user.create')
+                        ->with("leUser", $leUser)
+                        ->with("lesCouleurs", $lesCouleurs);
     }
 
     /**
@@ -45,31 +51,9 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $this->validate($request, User::$rulesOnCreate);
+
         $request->session()->flash('success', 'L\'utilisateur à été Ajouté !');
-        
-        $colorItem = "";
-        switch ($request->get('color')) {
-            case "blue":
-                $colorItem = "blue";
-                break;
-            case "yellow":
-                $colorItem = "orange";
-                break;
-            case "green":
-                $colorItem = "olive";
-                break;
-            case "purple":
-                $colorItem = "purple";
-                break;
-            case "red":
-                $colorItem = "maroon";
-                break;
-            case "black":
-                $colorItem = "navy";
-                break;
-            default:
-                $colorItem = "blue";
-        }
 
         User::create([
             'pseudo' => $request->get('pseudo'),
@@ -78,8 +62,7 @@ class UserController extends Controller {
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('password')),
             'avatar' => $request->get('avatar'),
-            'color_theme' => $request->get('color'),
-            'color_item' => $colorItem,
+            'color_id' => $request->get('color_id'),
         ]);
 
         return redirect()->route("user.index");
@@ -104,8 +87,11 @@ class UserController extends Controller {
     public function edit($id) {
         $leUser = User::find($id);
 
+        $lesCouleurs = Color::all();
+
         return view('user.edit')
-                        ->with("leUser", $leUser);
+                        ->with("leUser", $leUser)
+                        ->with("lesCouleurs", $lesCouleurs);
     }
 
     /**
@@ -116,45 +102,17 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $colorItem = "";
-        switch ($request->get('color')) {
-            case "blue":
-                $colorItem = "blue";
-                break;
-            case "yellow":
-                $colorItem = "orange";
-                break;
-            case "green":
-                $colorItem = "olive";
-                break;
-            case "purple":
-                $colorItem = "purple";
-                break;
-            case "red":
-                $colorItem = "maroon";
-                break;
-            case "black":
-                $colorItem = "navy";
-                break;
-            default:
-                $colorItem = "blue";
-        }
+        $this->validate($request, User::$rulesOnUpdate);
+
+        $request->session()->flash('success', 'L\'utilisateur à été Modifié !');
 
         $leUser = User::find($id);
-
-        $leUser->pseudo = $request->get('pseudo');
-        $leUser->nom = $request->get('nom');
-        $leUser->prenom = $request->get('prenom');
-        $leUser->email = $request->get('email');
-        $leUser->avatar = $request->get('avatar');
-        $leUser->color_theme = $request->get('color');
-        $leUser->color_item = $colorItem;
 
         if ($request->get('password') != "") {
             $leUser->password = bcrypt($request->get('password'));
         }
 
-        $leUser->save();
+        $leUser->update($request->except(['password']));
 
         return redirect()->route("user.index");
     }

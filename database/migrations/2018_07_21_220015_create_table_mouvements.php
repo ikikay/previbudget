@@ -17,7 +17,6 @@ class CreateTableMouvements extends Migration {
             $table->string('libelle');
             $table->enum('type', ['depenses_fixes', 'depenses_variables', 'depenses_occasionnelles', 'revenus']);
             $table->integer('compte_id')->unsigned();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

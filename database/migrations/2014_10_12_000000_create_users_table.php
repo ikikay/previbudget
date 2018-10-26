@@ -21,8 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
-            $table->string('color_theme');
-            $table->string('color_item');
+            $table->integer('color_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -25,7 +25,9 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $lesComptes = Compte::where('user_id', "=", Auth::user()->id)->get();
+        $leUser = User::find(Auth::user()->id);
+
+        $lesComptes = $leUser->comptes;
 
         return view('compte.index')
                         ->with('tab_comptes', $lesComptes);
@@ -37,7 +39,10 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('compte.create');
+        $leCompte = new Compte();
+
+        return view('compte.create')
+                        ->with("leCompte", $leCompte);
     }
 
     /**
@@ -49,13 +54,14 @@ class CompteController extends Controller {
     public function store(Request $request) {
         $request->session()->flash('success', 'Le compte à été Ajouté !');
 
-        //$leUser = User::find($request->get('idUser'));
+        $leUser = User::find(Auth::user()->id);
+
         $leCompte = new Compte();
-        $leCompte->user_id = $request->get('user_id');
         $leCompte->libelle = $request->get('libelle');
-        
+        $leCompte->user()->associate($leUser);
+
         $leCompte->save();
-        
+
         return redirect()->route("compte.index");
     }
 
@@ -90,11 +96,11 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $leCompte = User::find($id);
+        $request->session()->flash('success', 'Le compte à été Modifié !');
 
-        $leCompte->libelle = $request->get('libelle');
+        $leCompte = Compte::find($id);
 
-        $leCompte->save();
+        $leCompte->update($request->all());
 
         return redirect()->route("compte.index");
     }

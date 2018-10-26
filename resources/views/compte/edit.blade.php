@@ -2,14 +2,14 @@
 
 @section('title')
 <h1>
-    Modication d'un TODO
-    <small>- Modication d'un TODO</small>
+    Modication d'un compte
+    <small>- Modication d'un compte</small>
 </h1>
 @stop
 
 @section('content')
 
-
+@include('compte.form')
 
 @stop
 

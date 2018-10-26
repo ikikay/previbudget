@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Compte extends Model {
+    /**
+     * - - - - - fillable - - - - -  
+     */
 
     /**
      * The attributes that are mass assignable.
@@ -15,6 +18,9 @@ class Compte extends Model {
         'libelle',
     ];
 
+    /**
+     * - - - - - Relations - - - - -  
+     */
     public function user() {
         return $this->belongsTo('App\Models\User');
     }

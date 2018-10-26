@@ -19,7 +19,6 @@ class CreateTableTransactions extends Migration {
             $table->double('montant_effectif');
             $table->double('montant_previsionnel');
             $table->integer('mouvement_id')->unsigned();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
