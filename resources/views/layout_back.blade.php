@@ -20,7 +20,7 @@
         <!-- AdminLTE Skins. Le choix du skin par defaut est bleu.
             On peu le changer par d'autres skin, vérifiez bien d'appliquer la classe du skin, au tag Body pour que ça prenne effet
         -->
-        <link rel="stylesheet" href="{{url('css/skins/skin-' . Auth::user()->color_theme . '.min.css') }}">
+        <link rel="stylesheet" href="{{url('css/skins/skin-' . Auth::user()->color->color_theme . '.min.css') }}">
 
         <link rel="stylesheet" href="{{url('css/style_back.css') }}" >
 
@@ -53,7 +53,7 @@
     |               | sidebar-mini                            |
     |---------------------------------------------------------|
     -->
-    <body class="hold-transition skin-{{ Auth::user()->color_theme }} sidebar-mini">
+    <body class="hold-transition skin-{{ Auth::user()->color->color_theme }} sidebar-mini">
         <div class="wrapper">
 
             <!-- Main Header -->

@@ -10,6 +10,6 @@ class Color extends Model
      * - - - - - Relations - - - - -  
      */
     public function users() {
-        return $this->belongsToMany('App\Models\User');
+        return $this->hasMany('App\Models\User');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Models\User;
 use App\Models\Color;
 
@@ -53,18 +52,20 @@ class UserController extends Controller {
     public function store(Request $request) {
         $this->validate($request, User::$rulesOnCreate);
 
+        $laCouleur = Couleur::find($request->get('color_id'));
+        $leUser = new User();
+
+        $leUser->pseudo = $request->get('pseudo');
+        $leUser->nom = $request->get('nom');
+        $leUser->prenom = $request->get('prenom');
+        $leUser->email = $request->get('email');
+        $leUser->password = bcrypt($request->get('password'));
+        $leUser->avatar = $request->get('avatar');
+        $leUser->color()->asociate($laCouleur);
+        
+        $leUser->save();
+                
         $request->session()->flash('success', 'L\'utilisateur à été Ajouté !');
-
-        User::create([
-            'pseudo' => $request->get('pseudo'),
-            'nom' => $request->get('nom'),
-            'prenom' => $request->get('prenom'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password')),
-            'avatar' => $request->get('avatar'),
-            'color_id' => $request->get('color_id'),
-        ]);
-
         return redirect()->route("user.index");
     }
 
@@ -86,7 +87,6 @@ class UserController extends Controller {
      */
     public function edit($id) {
         $leUser = User::find($id);
-
         $lesCouleurs = Color::all();
 
         return view('user.edit')
@@ -104,8 +104,6 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, User::$rulesOnUpdate);
 
-        $request->session()->flash('success', 'L\'utilisateur à été Modifié !');
-
         $leUser = User::find($id);
 
         if ($request->get('password') != "") {
@@ -114,6 +112,7 @@ class UserController extends Controller {
 
         $leUser->update($request->except(['password']));
 
+        $request->session()->flash('success', 'L\'utilisateur à été Modifié !');
         return redirect()->route("user.index");
     }
 
@@ -124,12 +123,11 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id) {
-        $request->session()->flash('success', 'L\'utilisateur à été Supprimé !');
-
         $leUser = User::find($id);
 
         $leUser->delete();
 
+        $request->session()->flash('success', 'L\'utilisateur à été Supprimé !');
         return redirect()->route("user.index");
     }
 

@@ -9,9 +9,9 @@
 @section('content')
 
 <?php 
-    $color = "blue";
+    $color = "1";
     if($leUser->id){   
-        $color = $leUser->color->color_theme;
+        $color = $leUser->color->id;
     }
 ?>
 @include('user.form')
@@ -23,8 +23,8 @@
 <script>
     $(document).ready(function () {
         var couleur = "{{ $color }}";
-        console.log("Selection automatique de {{ $color }}");
         $('select:first').val(couleur);
+        $('#password').val("");
     });
 </script>
 @stop

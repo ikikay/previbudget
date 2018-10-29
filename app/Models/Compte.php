@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Compte extends Model {
+
+    /**
+     * - - - - - static - - - - -  
+     */
+    public static $rules = [
+        'libelle' => 'required|min:4|max:20|regex:/^[\p{L}\s\-]+$/u',
+    ];
+
     /**
      * - - - - - fillable - - - - -  
      */

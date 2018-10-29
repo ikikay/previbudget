@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Models\User;
 use App\Models\Compte;
+use Carbon\Carbon;
 
 class CompteController extends Controller {
 
@@ -25,12 +25,10 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $leUser = User::find(Auth::user()->id);
-
-        $lesComptes = $leUser->comptes;
+        $lesComptes = Compte::with('user')->where('user_id', Auth::user()->id)->get();
 
         return view('compte.index')
-                        ->with('tab_comptes', $lesComptes);
+                        ->with('lesComptes', $lesComptes);
     }
 
     /**
@@ -52,7 +50,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $request->session()->flash('success', 'Le compte à été Ajouté !');
+        $this->validate($request, Compte::$rules);
 
         $leUser = User::find(Auth::user()->id);
 
@@ -62,6 +60,7 @@ class CompteController extends Controller {
 
         $leCompte->save();
 
+        $request->session()->flash('success', 'Le compte à été Ajouté !');
         return redirect()->route("compte.index");
     }
 
@@ -72,7 +71,13 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+        $leCompte = Compte::with('mouvements')->find($id);
+        $now = new Carbon();
+        $now->setLocale('fr');
+        dd($now->subMonth()->diffForHumans());
+        return view('compte.show')
+                        ->with("leCompte", $leCompte)
+                        ->with("now", $now);
     }
 
     /**
@@ -96,12 +101,13 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        $request->session()->flash('success', 'Le compte à été Modifié !');
+        $this->validate($request, Compte::$rules);
 
         $leCompte = Compte::find($id);
 
         $leCompte->update($request->all());
 
+        $request->session()->flash('success', 'Le compte à été Modifié !');
         return redirect()->route("compte.index");
     }
 
@@ -112,12 +118,11 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id) {
-        $request->session()->flash('success', 'Le compte à été Supprimé !');
-
         $leCompte = Compte::find($id);
 
         $leCompte->delete();
 
+        $request->session()->flash('success', 'Le compte à été Supprimé !');
         return redirect()->route("compte.index");
     }
 
