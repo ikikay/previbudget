@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Compte
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Mouvement[] $mouvements
+ * @property-read \App\Models\User $user
+ * @mixin \Eloquent
+ */
 class Compte extends Model {
 
     /**

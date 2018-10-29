@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Transaction
+ *
+ * @property-read \App\Models\Mouvement $mouvement
+ * @mixin \Eloquent
+ */
 class Transaction extends Model {
 
     /**

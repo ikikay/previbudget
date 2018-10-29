@@ -27,7 +27,7 @@
                         </div>
                     </form>
 
-                    <table class="table table-bordered table-responsive" >
+                    <table class="table table-bordered" >
                         <thead class="thead-inverse" >
                             <tr>
                                 <th class="text-center" style="width: 25%">Mouvement</th>

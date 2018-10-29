@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Carbone\Carbone;
 
+/**
+ * App\Models\Mouvement
+ *
+ * @property-read \App\Models\Compte $compte
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Transaction[] $transactions
+ * @mixin \Eloquent
+ */
 class Mouvement extends Model {
     /**
      * - - - - - fillable - - - - -  
