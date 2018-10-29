@@ -71,13 +71,14 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $leCompte = Compte::with('mouvements')->find($id);
-        $now = new Carbon();
-        $now->setLocale('fr');
-        dd($now->subMonth()->diffForHumans());
+        $leCompte = Compte::with('mouvements', 'mouvements.transactions')->find($id);
+        $actualMonth = new Carbon();
+        $actualMonth->setLocale('fr');
+        $actualMonth->firstOfMonth();
+        
         return view('compte.show')
                         ->with("leCompte", $leCompte)
-                        ->with("now", $now);
+                        ->with("actualMonth", $actualMonth);
     }
 
     /**

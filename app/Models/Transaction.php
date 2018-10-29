@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model {
+
+    /**
+     * - - - - - static - - - - -  
+     */
+    public function getDates() {
+        return ['created_at', 'updated_at', 'dte_effectif', 'dte_previsionnel'];
+    }
+
     /**
      * - - - - - fillable - - - - -  
      */
@@ -24,4 +32,16 @@ class Transaction extends Model {
     public function mouvement() {
         return $this->belongsTo('App\Models\Mouvement');
     }
+
+    /**
+     * - - - - - Fonctions perso - - - - -  
+     */
+    public function isEffectif() {
+        if ($this->montant_effectif != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -27,27 +27,52 @@
                         </div>
                     </form>
 
-                    <table class="table table-bordered" >
+                    <table class="table table-bordered table-responsive" >
                         <thead class="thead-inverse" >
                             <tr>
-                                <th class="text-center">Mouvement</th>
-                                <th class="text-center">Mois n-1</th>
-                                <th class="text-center">{{ $now->format('F') }}</th>
-                                <th class="text-center">Mois n+1</th>
+                                <th class="text-center" style="width: 25%">Mouvement</th>
+                                @for ($i = 1; $i >= -6; $i--)
+                                <th class="text-center" style="width: 9.375%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                                @endfor
                             </tr>
                         </thead>
                         <tbody>
 
                             @foreach ($leCompte->mouvements as $unMouvement)
-                            {{ $unMouvement->libelle }}
+                            <tr>
+
+                                <td class="text-center"id="maintd{{ $unMouvement->id }}">
+                                    <h4>{{ $unMouvement->libelle }}</h4>
+                                </td>
+
+                                @for ($i = 1; $i >= -6; $i--)
+                                    @if ($unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id)
+                                        @if ($unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->isEffectif())
+                                            <td class="text-center"id="m{{ $actualMonth->copy()->subMonth($i)->month }}td{{ $unMouvement->id }}">
+                                                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€
+                                                <div class="row text-center">( {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d/m/Y') }} ) </div>
+                                            </td>
+                                        @else
+                                            <td class="text-center"id="m{{ $actualMonth->copy()->subMonth($i)->month }}td{{ $unMouvement->id }}">
+                                                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_previsionnel }}€
+                                                <div class="row text-center">( {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_previsionnel->format('d/m/Y') }} ) </div>
+                                            </td>
+                                        @endif
+                                    @else
+                                        <td class="text-center">                        
+                                        </td>
+                                    @endif
+                                @endfor
+
+                            </tr>
                             @endforeach
 
                             <tr>
-                                <td class="col-md-3 text-center"id="maintd0">
+                                <td class="text-center"id="maintd0">
                                     <h4> ... </h4>
                                 </td>
 
-                                <td class="col-md-9 text-center" colspan="3">
+                                <td class="text-center" colspan="8">
                                     <div class="row">
                                         <div class="col-md-12">
                                             {!! Form::open(['route' => "mouvement.create", 'method' => 'get']) !!}
