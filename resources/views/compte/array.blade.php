@@ -32,7 +32,7 @@
     @endif
     @else
     <td class="text-center">   
-        {!! Form::open(['route' => "user.create", 'method' => 'get']) !!}
+        {!! Form::open(['route' => ["transaction.create", $unMouvement->id], 'method' => 'get']) !!}
         <button type="submit" class="btn btn-lg btn-block">
             <h6>
                 <div classe ="row">&nbsp</div>

@@ -9,7 +9,7 @@
 
 @section('content')
 
-<?php 
+<?php
 $nbrBoucle = -6;
 ?>
 
@@ -19,16 +19,6 @@ $nbrBoucle = -6;
         <div class="box">
             <div class="box-header with-border">
                 <div class="box-body">
-                    <!-- search form (Optional) -->
-                    <form action="#" method="get">
-                        <div class="input-group margin">
-                            <input type="text" name="q" class="form-control" placeholder="Rechercher . . .">
-                            <span class="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" class="btn bg-{{ $auth->color->color_item }} btn-flat"><i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
 
                     <table class="table table-bordered" style="table-layout: fixed">
                         <thead class="thead-inverse" >
@@ -40,26 +30,44 @@ $nbrBoucle = -6;
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             @include('compte.array', ['lesMouvements' => $lesMouvementsRevenus])
                             <tr>
-                                <th class="text-center" style="width: 20%">Mouvement</th>
-                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                                <th class="text-center" style="width: 20%">Total Revenus</th>
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
+                                <th class="text-center" style="width: 10%">{{ $leCompte->sommeRevenusDuMois($actualMonth->copy()->subMonth($i)) }}€</th>
+                                @endfor
                             </tr>
+
                             @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesFixes])
                             <tr>
-                                <th class="text-center" style="width: 20%">Mouvement</th>
-                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                                <th class="text-center" style="width: 20%">Total Depenses Fixes</th>
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
+                                <th class="text-center" style="width: 10%">{{ $leCompte->sommeDepensesFixesDuMois($actualMonth->copy()->subMonth($i)) }}€</th>
+                                @endfor
                             </tr>
+
                             @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesVariables])
                             <tr>
-                                <th class="text-center" style="width: 20%">Mouvement</th>
-                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                                <th class="text-center" style="width: 20%">Total Depenses Variables</th>
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
+                                <th class="text-center" style="width: 10%">{{ $leCompte->sommeDepensesVariableDuMois($actualMonth->copy()->subMonth($i)) }}€</th>
+                                @endfor
                             </tr>
+
                             @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesOccasionnelles])
                             <tr>
-                                <th class="text-center" style="width: 20%">Mouvement</th>
-                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                                <th class="text-center" style="width: 20%">Total Depenses Occasionnelles</th>
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
+                                <th class="text-center" style="width: 10%">{{ $leCompte->sommeDepensesOccasionnellesDuMois($actualMonth->copy()->subMonth($i)) }}€</th>
+                                @endfor
+                            </tr>
+
+                            <tr>
+                                <th class="text-center" style="width: 20%">Total</th>
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
+                                <th class="text-center" style="width: 10%">{{ $leCompte->sommeTotalDuMois($actualMonth->copy()->subMonth($i)) }}€</th>
+                                @endfor
                             </tr>
 
                             <tr>

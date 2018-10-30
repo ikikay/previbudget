@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Mouvement;
+use App\Models\Transaction;
 
 class TransactionController extends Controller {
 
@@ -29,8 +32,16 @@ class TransactionController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        //
+    public function create($idMouvement) {
+        $auth = Auth::user()->load('color');
+
+        $leMouvement = Mouvement::find($idMouvement);
+        $laTransaction = new Transaction();
+
+        return view('transaction.create')
+                        ->with('auth', $auth)
+                        ->with("laTransaction", $laTransaction)
+                        ->with("leMouvement", $leMouvement);
     }
 
     /**
@@ -39,8 +50,17 @@ class TransactionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        //
+    public function store(Request $request, $idMouvement) {
+        $this->validate($request, Transaction::$rules);
+
+        $laTransaction = new Transaction();
+        $laTransaction->libelle = $request->get('libelle');
+        $laTransaction->mouvement()->associate($idMouvement);
+
+        $laTransaction->save();
+
+        $request->session()->flash('success', 'La transaction à été Ajouté !');
+        return redirect()->route("compte.show", ['id' => $laTransaction->mouvement->compte->id]);
     }
 
     /**
@@ -60,7 +80,12 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        $auth = Auth::user()->load('color');
+        $laTransaction = Transaction::find($id);
+
+        return view('transaction.edit')
+                        ->with('auth', $auth)
+                        ->with("laTransaction", $laTransaction);
     }
 
     /**
@@ -71,7 +96,14 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $this->validate($request, Transaction::$rules);
+
+        $laTransaction = Transaction::find($id);
+
+        $laTransaction->update($request->all());
+
+        $request->session()->flash('success', 'La transaction à été Modifié !');
+        return redirect()->route("compte.show", ['id' => $laTransaction->mouvement->compte->id]);
     }
 
     /**

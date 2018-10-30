@@ -18,22 +18,30 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@toDashboard')->name('dashboard');
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('dashboard', 'HomeController@toDashboard');
 
+    //User
     Route::resource('user', 'UserController')->except([
         'show'
     ]);
+    
+    //Compte
     Route::resource('compte', 'CompteController');
+    
+    //Mouvement
     Route::resource('mouvement', 'MouvementController')->except([
-    'create', 'store'
+        'index', 'create', 'store', 'update', 'destroy'
     ]);
     Route::get('/mouvement/create/{idCompte}', 'MouvementController@create')->name('mouvement.create');
     Route::post('/mouvement/{idCompte}', 'MouvementController@store')->name('mouvement.store');
+    
+    //Transaction
     Route::resource('transaction', 'TransactionController')->except([
-        'index', 'create', 'store', 'show', 'update', 'destroy'
+        'index','show', 'destroy'
     ]);
-
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/transaction/create/{idMouvement}', 'TransactionController@create')->name('transaction.create');
+    Route::post('/transaction/{idMouvement}', 'TransactionController@store')->name('transaction.store');
 });
 
 Auth::routes();

@@ -43,7 +43,6 @@ class MouvementController extends Controller {
                         ->with("lesDepenses", $lesDepenses)
                         ->with("leMouvement", $leMouvement)
                         ->with("idCompte", $idCompte);
-        ;
     }
 
     /**
@@ -53,8 +52,6 @@ class MouvementController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $idCompte) {
-        $auth = Auth::user()->load('color');
-
         $this->validate($request, Mouvement::$rules);
 
         $leMouvement = new Mouvement();
@@ -65,7 +62,7 @@ class MouvementController extends Controller {
         $leMouvement->save();
 
         $request->session()->flash('success', 'Le mouvement à été Ajouté !');
-        return redirect()->route("compte.show", ['id' => 1]);
+        return redirect()->route("compte.show", ['id' => $leMouvement->compte->id]);
     }
 
     /**
