@@ -20,7 +20,7 @@
                         <div class="input-group margin">
                             <input type="text" name="q" class="form-control" placeholder="Rechercher . . .">
                             <span class="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" class="btn bg-{{ Auth::user()->color->color_item }} btn-flat"><i class="fa fa-search"></i>
+                                <button type="submit" name="search" id="search-btn" class="btn bg-{{ $auth->color->color_item }} btn-flat"><i class="fa fa-search"></i>
                                 </button>
                             </span>
                         </div>
@@ -49,12 +49,12 @@
                                             {!! Form::close() !!}
                                         </div>
                                         <div class="col-md-4">
-                                            {!! Form::open(['route' => ["compte.show", $unCompte->id], 'method' => 'get', 'id' => "form".$unCompte->id]) !!}
+                                            {!! Form::open(['route' => ["compte.show", $unCompte->id], 'method' => 'get']) !!}
                                             <button type="submit" id="show{{ $unCompte->id }}" class="btn btn-primary btn-circle "><i class="fa fa-search"></i></button>
                                             {!! Form::close() !!}
                                         </div>
                                         <div class="col-md-4">
-                                            {!! Form::open(['route' => ["compte.destroy", $unCompte->id], 'method' => 'delete', 'id' => "form".$unCompte->id]) !!}
+                                            {!! Form::open(['route' => ["compte.destroy", $unCompte->id], 'method' => 'delete']) !!}
                                             <button type="submit" id="{{ $unCompte->id }}" class="jsDeleteButton btn btn-danger btn-circle "><i class="fa fa-times"></i></button>
                                             {!! Form::close() !!}
                                         </div>
@@ -70,7 +70,7 @@
 
                                 <td class="col-md-2 text-center">
                                     {!! Form::open(['route' => "compte.create", 'method' => 'get']) !!}
-                                    <button type="submit" class="btn bg-{{ Auth::user()->color->color_item }} btn-lg btn-block">Nouveau compte</button>
+                                    <button type="submit" class="btn bg-{{ $auth->color->color_item }} btn-lg btn-block">Nouveau compte</button>
                                     {!! Form::close() !!}
                                 </td>
                             </tr>

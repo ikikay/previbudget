@@ -15,6 +15,6 @@ if ($leCompte->id) {
 
 </br>
 
-{!! Form::submit($action, ['class'=> 'btn bg-' . Auth::user()->color->color_item .' btn-lg btn-block']) !!}
+{!! Form::submit($action, ['class'=> 'btn bg-' . $auth->color->color_item .' btn-lg btn-block']) !!}
 
 {!! Form::close()!!}

@@ -20,7 +20,7 @@
                         <div class="input-group margin">
                             <input type="text" name="q" class="form-control" placeholder="Rechercher . . .">
                             <span class="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" class="btn bg-{{ Auth::user()->color->color_item }} btn-flat"><i class="fa fa-search"></i>
+                                <button type="submit" name="search" id="search-btn" class="btn bg-{{ $auth->color->color_item }} btn-flat"><i class="fa fa-search"></i>
                                 </button>
                             </span>
                         </div>
@@ -80,7 +80,7 @@
 
                                 <td class="col-md-9 text-center" colspan="4">
                                     {!! Form::open(['route' => "user.create", 'method' => 'get']) !!}
-                                    <button type="submit" class="btn bg-{{ Auth::user()->color->color_item }} btn-lg btn-block">Nouveau utilisateur</button>
+                                    <button type="submit" class="btn bg-{{ $auth->color->color_item }} btn-lg btn-block">Nouveau utilisateur</button>
                                     {!! Form::close() !!}
                                 </td>
                             </tr>

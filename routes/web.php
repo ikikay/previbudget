@@ -17,16 +17,21 @@ Route::get('/', function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
+    Route::get('/', 'HomeController@toDashboard')->name('dashboard');
     Route::get('dashboard', 'HomeController@toDashboard');
 
-    Route::resource('user', 'UserController');
+    Route::resource('user', 'UserController')->except([
+        'show'
+    ]);
     Route::resource('compte', 'CompteController');
-    Route::resource('mouvement', 'MouvementController');
-    Route::resource('transaction', 'TransactionController');
+    Route::resource('mouvement', 'MouvementController')->except([
+    'create', 'store'
+    ]);
+    Route::get('/mouvement/create/{idCompte}', 'MouvementController@create')->name('mouvement.create');
+    Route::post('/mouvement/{idCompte}', 'MouvementController@store')->name('mouvement.store');
+    Route::resource('transaction', 'TransactionController')->except([
+        'index', 'create', 'store', 'show', 'update', 'destroy'
+    ]);
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

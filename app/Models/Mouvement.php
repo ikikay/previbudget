@@ -13,6 +13,14 @@ use Carbone\Carbone;
  * @mixin \Eloquent
  */
 class Mouvement extends Model {
+
+    /**
+     * - - - - - static - - - - -  
+     */
+    public static $rules = [
+        'libelle' => 'required|min:4|max:20|regex:/^[\p{L}\s\-]+$/u',
+    ];
+
     /**
      * - - - - - fillable - - - - -  
      */
@@ -29,6 +37,10 @@ class Mouvement extends Model {
     /**
      * - - - - - Relations - - - - -  
      */
+    public function depense() {
+        return $this->belongsTo('App\Models\Depense');
+    }
+
     public function compte() {
         return $this->belongsTo('App\Models\Compte');
     }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Compte;
 use Carbon\Carbon;
 
@@ -25,9 +24,11 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $lesComptes = Compte::with('user')->where('user_id', Auth::user()->id)->get();
+        $auth = Auth::user()->load('color');
+        $lesComptes = Compte::where('user_id', $auth->id)->get();
 
         return view('compte.index')
+                        ->with('auth', $auth)
                         ->with('lesComptes', $lesComptes);
     }
 
@@ -37,9 +38,11 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $auth = Auth::user()->load('color');
         $leCompte = new Compte();
 
         return view('compte.create')
+                        ->with('auth', $auth)
                         ->with("leCompte", $leCompte);
     }
 
@@ -50,13 +53,12 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $auth = Auth::user()->load('color');
         $this->validate($request, Compte::$rules);
-
-        $leUser = User::find(Auth::user()->id);
 
         $leCompte = new Compte();
         $leCompte->libelle = $request->get('libelle');
-        $leCompte->user()->associate($leUser);
+        $leCompte->user()->associate($auth->id);
 
         $leCompte->save();
 
@@ -71,14 +73,25 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $auth = Auth::user()->load('color');
         $leCompte = Compte::with('mouvements', 'mouvements.transactions')->find($id);
+        $leCompte->mouvements->sortBy('depense_id');
+        $lesMouvementsRevenus = $leCompte->mouvements->where('depense_id', 1)->sortBy("libelle");
+        $lesMouvementsDepensesFixes = $leCompte->mouvements->where('depense_id', 2)->sortBy("libelle");
+        $lesMouvementsDepensesVariables = $leCompte->mouvements->where('depense_id', 3)->sortBy("libelle");
+        $lesMouvementsDepensesOccasionnelles = $leCompte->mouvements->where('depense_id', 4)->sortBy("libelle");
         $actualMonth = new Carbon();
         $actualMonth->setLocale('fr');
         $actualMonth->firstOfMonth();
-        
+
         return view('compte.show')
+                        ->with('auth', $auth)
+                        ->with("actualMonth", $actualMonth)
                         ->with("leCompte", $leCompte)
-                        ->with("actualMonth", $actualMonth);
+                        ->with("lesMouvementsRevenus", $lesMouvementsRevenus)
+                        ->with("lesMouvementsDepensesFixes", $lesMouvementsDepensesFixes)
+                        ->with("lesMouvementsDepensesVariables", $lesMouvementsDepensesVariables)
+                        ->with("lesMouvementsDepensesOccasionnelles", $lesMouvementsDepensesOccasionnelles);
     }
 
     /**
@@ -88,9 +101,11 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $auth = Auth::user()->load('color');
         $leCompte = Compte::find($id);
 
         return view('compte.edit')
+                        ->with('auth', $auth)
                         ->with("leCompte", $leCompte);
     }
 

@@ -43,4 +43,9 @@ class Compte extends Model {
     public function mouvements() {
         return $this->hasMany('App\Models\Mouvement');
     }
+
+    /**
+     * - - - - - Fonctions perso - - - - -  
+     */
+    
 }

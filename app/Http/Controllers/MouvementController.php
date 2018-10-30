@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Depense;
+use App\Models\Mouvement;
 
 class MouvementController extends Controller {
 
@@ -29,8 +32,18 @@ class MouvementController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        //
+    public function create($idCompte) {
+        $auth = Auth::user()->load('color');
+
+        $leMouvement = new Mouvement();
+        $lesDepenses = Depense::all();
+
+        return view('mouvement.create')
+                        ->with('auth', $auth)
+                        ->with("lesDepenses", $lesDepenses)
+                        ->with("leMouvement", $leMouvement)
+                        ->with("idCompte", $idCompte);
+        ;
     }
 
     /**
@@ -39,8 +52,20 @@ class MouvementController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        //
+    public function store(Request $request, $idCompte) {
+        $auth = Auth::user()->load('color');
+
+        $this->validate($request, Mouvement::$rules);
+
+        $leMouvement = new Mouvement();
+        $leMouvement->libelle = $request->get('libelle');
+        $leMouvement->depense()->associate($request->get('depense_id'));
+        $leMouvement->compte()->associate($idCompte);
+
+        $leMouvement->save();
+
+        $request->session()->flash('success', 'Le mouvement à été Ajouté !');
+        return redirect()->route("compte.show", ['id' => 1]);
     }
 
     /**

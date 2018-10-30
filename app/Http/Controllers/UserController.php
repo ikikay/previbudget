@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Color;
 
@@ -23,9 +24,11 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $auth = Auth::user()->load('color');
         $lesUsers = User::all();
 
         return view('user.index')
+                        ->with('auth', $auth)
                         ->with('tab_users', $lesUsers);
     }
 
@@ -35,10 +38,12 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $auth = Auth::user()->load('color');
         $leUser = new User();
         $lesCouleurs = Color::all();
 
         return view('user.create')
+                        ->with('auth', $auth)
                         ->with("leUser", $leUser)
                         ->with("lesCouleurs", $lesCouleurs);
     }
@@ -52,7 +57,6 @@ class UserController extends Controller {
     public function store(Request $request) {
         $this->validate($request, User::$rulesOnCreate);
 
-        $laCouleur = Couleur::find($request->get('color_id'));
         $leUser = new User();
 
         $leUser->pseudo = $request->get('pseudo');
@@ -61,10 +65,10 @@ class UserController extends Controller {
         $leUser->email = $request->get('email');
         $leUser->password = bcrypt($request->get('password'));
         $leUser->avatar = $request->get('avatar');
-        $leUser->color()->asociate($laCouleur);
-        
+        $leUser->color()->associate($request->get('color_id'));
+
         $leUser->save();
-                
+
         $request->session()->flash('success', 'L\'utilisateur à été Ajouté !');
         return redirect()->route("user.index");
     }
@@ -86,10 +90,12 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $leUser = User::find($id);
+        $auth = Auth::user()->load('color');
+        $leUser = User::with('color')->find($id);
         $lesCouleurs = Color::all();
 
         return view('user.edit')
+                        ->with('auth', $auth)
                         ->with("leUser", $leUser)
                         ->with("lesCouleurs", $lesCouleurs);
     }

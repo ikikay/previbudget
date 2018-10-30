@@ -22,6 +22,7 @@ class AlterTableFk extends Migration {
 
         Schema::table('mouvements', function (Blueprint $table) {
             $table->foreign('compte_id')->references('id')->on('comptes')->onDelete('cascade');
+            $table->foreign('depense_id')->references('id')->on('depenses')->onDelete('cascade');
         });
 
         Schema::table('transactions', function (Blueprint $table) {

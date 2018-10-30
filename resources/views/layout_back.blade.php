@@ -20,7 +20,7 @@
         <!-- AdminLTE Skins. Le choix du skin par defaut est bleu.
             On peu le changer par d'autres skin, vérifiez bien d'appliquer la classe du skin, au tag Body pour que ça prenne effet
         -->
-        <link rel="stylesheet" href="{{url('css/skins/skin-' . Auth::user()->color->color_theme . '.min.css') }}">
+        <link rel="stylesheet" href="{{url('css/skins/skin-' . $auth->color->color_theme . '.min.css') }}">
 
         <link rel="stylesheet" href="{{url('css/style_back.css') }}" >
 
@@ -53,7 +53,7 @@
     |               | sidebar-mini                            |
     |---------------------------------------------------------|
     -->
-    <body class="hold-transition skin-{{ Auth::user()->color->color_theme }} sidebar-mini">
+    <body class="hold-transition skin-{{ $auth->color->color_theme }} sidebar-mini">
         <div class="wrapper">
 
             <!-- Main Header -->
@@ -83,7 +83,7 @@
                                     <!-- The user image in the navbar-->
                                     <img src="{{url('img/profil-default.png') }}" class="user-image" alt="User Image">
                                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                    <span class="hidden-xs">{{Auth::user()->nom }} {{Auth::user()->prenom }}</span>
+                                    <span class="hidden-xs">{{$auth->nom }} {{$auth->prenom }}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- The user image in the menu -->
@@ -91,8 +91,8 @@
                                         <img src="{{url('img/profil-default.png') }}" class="img-circle" alt="User Image">
 
                                         <p>
-                                            {{Auth::user()->nom}}&nbsp {{Auth::user()->prenom}}
-                                            <small>Inscrit le : {{Auth::user()->created_at->format('d/m/Y')}}</small>
+                                            {{$auth->nom}}&nbsp {{$auth->prenom}}
+                                            <small>Inscrit le : {{$auth->created_at->format('d/m/Y')}}</small>
                                         </p>
                                     </li>
                                     <!-- Menu Body -->
@@ -124,7 +124,7 @@
                             <img src="{{url('img/profil-default.png') }}" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
-                            <p>{{Auth::user()->nom}}&nbsp {{Auth::user()->prenom}}</p>
+                            <p>{{$auth->nom}}&nbsp {{$auth->prenom}}</p>
                         </div>
                     </div>
 
