@@ -9,6 +9,9 @@
 
 @section('content')
 
+<?php 
+$nbrBoucle = -6;
+?>
 
 <!-- Main content -->
 <div class="row">
@@ -31,61 +34,33 @@
                         <thead class="thead-inverse" >
                             <tr>
                                 <th class="text-center" style="width: 20%">Mouvement</th>
-                                @for ($i = 1; $i >= -6; $i--)
+                                @for ($i = 1; $i >= $nbrBoucle; $i--)
                                 <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
                                 @endfor
                             </tr>
                         </thead>
                         <tbody>
-
-                            @foreach ($leCompte->mouvements as $unMouvement)
+                            
+                            @include('compte.array', ['lesMouvements' => $lesMouvementsRevenus])
                             <tr>
-
-                                <td class="text-center"id="maintd{{ $unMouvement->id }}">
-                                    {{ $unMouvement->libelle }}
-                                </td>
-
-                                @for ($i = 1; $i >= -6; $i--)
-                                @if ($unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id)
-                                @if ($unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->isEffectif())
-                                <td class="text-center"id="m{{ $actualMonth->copy()->subMonth($i)->month }}td{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id }}">
-                                    {!! Form::open(['route' => ["transaction.edit", $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id], 'method' => 'get']) !!}
-                                    <button type="submit" class="btn bg-olive btn-lg btn-block">
-                                        <h6>             
-                                            <div classe ="row">{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€</div>
-                                            <div classe ="row">le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d') }}</div>
-                                        </h6>
-                                    </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @else
-                                <td class="text-center"id="m{{ $actualMonth->copy()->subMonth($i)->month }}td{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id }}">
-                                    {!! Form::open(['route' => ["transaction.edit", $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id], 'method' => 'get']) !!}
-                                    <button type="submit" class="btn bg-orange btn-lg btn-block">
-                                        <h6>
-                                            <div classe ="row">{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_previsionnel }}€</div>
-                                            <div classe ="row">le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_previsionnel->format('d') }}</div>
-                                        </h6>
-                                    </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endif
-                                @else
-                                <td class="text-center">   
-                                    {!! Form::open(['route' => "user.create", 'method' => 'get']) !!}
-                                    <button type="submit" class="btn btn-lg btn-block">
-                                        <h6>
-                                            <div classe ="row">&nbsp</div>
-                                            <div classe ="row">&nbsp</div>
-                                        </h6>
-                                    </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endif
-                                @endfor
-
+                                <th class="text-center" style="width: 20%">Mouvement</th>
+                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
                             </tr>
-                            @endforeach
+                            @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesFixes])
+                            <tr>
+                                <th class="text-center" style="width: 20%">Mouvement</th>
+                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                            </tr>
+                            @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesVariables])
+                            <tr>
+                                <th class="text-center" style="width: 20%">Mouvement</th>
+                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                            </tr>
+                            @include('compte.array', ['lesMouvements' => $lesMouvementsDepensesOccasionnelles])
+                            <tr>
+                                <th class="text-center" style="width: 20%">Mouvement</th>
+                                <th class="text-center" style="width: 10%">{{ $actualMonth->copy()->subMonth($i)->format('F') }}</th>
+                            </tr>
 
                             <tr>
                                 <td class="text-center"id="maintd0">
