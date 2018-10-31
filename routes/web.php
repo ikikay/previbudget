@@ -31,17 +31,13 @@ Route::middleware('auth')->group(function () {
     
     //Mouvement
     Route::resource('mouvement', 'MouvementController')->except([
-        'index', 'create', 'store', 'update', 'destroy'
+        'index', 'show', 'update', 'destroy'
     ]);
-    Route::get('/mouvement/create/{idCompte}', 'MouvementController@create')->name('mouvement.create');
-    Route::post('/mouvement/{idCompte}', 'MouvementController@store')->name('mouvement.store');
     
     //Transaction
     Route::resource('transaction', 'TransactionController')->except([
-        'index','show', 'destroy'
+        'index', 'show', 'destroy'
     ]);
-    Route::get('/transaction/create/{idMouvement}', 'TransactionController@create')->name('transaction.create');
-    Route::post('/transaction/{idMouvement}', 'TransactionController@store')->name('transaction.store');
 });
 
 Auth::routes();

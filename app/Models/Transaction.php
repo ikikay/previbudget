@@ -15,6 +15,16 @@ class Transaction extends Model {
     /**
      * - - - - - static - - - - -  
      */
+    public static $rules = [
+        'dte_previsionnel' => 'date_format:d/m/Y',
+        'montant_previsionnel' => 'required|numeric',
+        'dte_effectif' => 'date_format:d/m/Y',
+        'montant_effectif' => 'numeric',
+    ];
+
+    /**
+     * - - - - - static - - - - -  
+     */
     public function getDates() {
         return ['created_at', 'updated_at', 'dte_effectif', 'dte_previsionnel'];
     }

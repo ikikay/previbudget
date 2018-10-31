@@ -32,7 +32,7 @@ class MouvementController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($idCompte) {
+    public function create(Request $request) {
         $auth = Auth::user()->load('color');
 
         $leMouvement = new Mouvement();
@@ -42,7 +42,7 @@ class MouvementController extends Controller {
                         ->with('auth', $auth)
                         ->with("lesDepenses", $lesDepenses)
                         ->with("leMouvement", $leMouvement)
-                        ->with("idCompte", $idCompte);
+                        ->with("compte_id", $request->get('compte_id'));
     }
 
     /**
@@ -51,13 +51,13 @@ class MouvementController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $idCompte) {
+    public function store(Request $request) {
         $this->validate($request, Mouvement::$rules);
 
         $leMouvement = new Mouvement();
         $leMouvement->libelle = $request->get('libelle');
         $leMouvement->depense()->associate($request->get('depense_id'));
-        $leMouvement->compte()->associate($idCompte);
+        $leMouvement->compte()->associate($request->get('compte_id'));
 
         $leMouvement->save();
 

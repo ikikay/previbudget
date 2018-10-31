@@ -3,12 +3,14 @@ if ($leMouvement->id) {
     $lesOptions = ['method' => 'put', 'url' => route('mouvement.update', $leMouvement->id)];
     $action = "Modifier";
 } else {
-    $lesOptions = ['method' => 'post', 'url' => route('mouvement.store', $idCompte)];
+    $lesOptions = ['method' => 'post', 'url' => route('mouvement.store')];
     $action = "Créer";
 }
 ?>
 
 {!! Form::model($leMouvement, $lesOptions) !!}
+
+<input id="compte_id" name="compte_id" value="{{ $compte_id }}" type="hidden" readonly>
 
 {!! Form::label('libelle', 'Libelle') !!}
 {!! Form::text('libelle', null, ['class'=> 'form-control'] ) !!}

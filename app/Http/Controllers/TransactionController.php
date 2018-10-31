@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Mouvement;
 use App\Models\Transaction;
 
@@ -32,16 +33,19 @@ class TransactionController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($idMouvement) {
+    public function create(Request $request) {
         $auth = Auth::user()->load('color');
 
-        $leMouvement = Mouvement::find($idMouvement);
         $laTransaction = new Transaction();
+        $laTransaction->montant_effectif = 0;
 
         return view('transaction.create')
                         ->with('auth', $auth)
                         ->with("laTransaction", $laTransaction)
-                        ->with("leMouvement", $leMouvement);
+                        ->with("mouvement_id", $request->get('mouvement_id'))
+                        ->with("jours", 1)
+                        ->with("mois", $request->get('mois'))
+                        ->with("annee", $request->get('annee'));
     }
 
     /**
@@ -50,12 +54,15 @@ class TransactionController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $idMouvement) {
+    public function store(Request $request) {
         $this->validate($request, Transaction::$rules);
 
         $laTransaction = new Transaction();
-        $laTransaction->libelle = $request->get('libelle');
-        $laTransaction->mouvement()->associate($idMouvement);
+        $laTransaction->dte_effectif = Carbon::create(2000, 1, 1, 0, 0, 0);
+        $laTransaction->dte_previsionnel = Carbon::createFromFormat('d/m/Y', $request->get('dte_previsionnel'));
+        $laTransaction->montant_effectif = 0;
+        $laTransaction->montant_previsionnel = $request->get('montant_previsionnel');
+        $laTransaction->mouvement()->associate($request->get('mouvement_id'));
 
         $laTransaction->save();
 
@@ -85,7 +92,11 @@ class TransactionController extends Controller {
 
         return view('transaction.edit')
                         ->with('auth', $auth)
-                        ->with("laTransaction", $laTransaction);
+                        ->with("laTransaction", $laTransaction)
+                        ->with('mouvement_id', $laTransaction->mouvement->id)
+                        ->with('jours', $laTransaction->dte_previsionnel->day)
+                        ->with('mois', $laTransaction->dte_previsionnel->month)
+                        ->with('annee', $laTransaction->dte_previsionnel->year);
     }
 
     /**
@@ -100,7 +111,12 @@ class TransactionController extends Controller {
 
         $laTransaction = Transaction::find($id);
 
-        $laTransaction->update($request->all());
+        $laTransaction->dte_effectif = Carbon::createFromFormat('d/m/Y', $request->get('dte_effectif'));
+        $laTransaction->dte_previsionnel = Carbon::createFromFormat('d/m/Y', $request->get('dte_previsionnel'));
+        $laTransaction->montant_effectif = $request->get('montant_effectif');
+        $laTransaction->montant_previsionnel = $request->get('montant_previsionnel');
+
+        $laTransaction->save();
 
         $request->session()->flash('success', 'La transaction à été Modifié !');
         return redirect()->route("compte.show", ['id' => $laTransaction->mouvement->compte->id]);

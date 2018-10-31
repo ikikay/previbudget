@@ -32,7 +32,10 @@
     @endif
     @else
     <td class="text-center">   
-        {!! Form::open(['route' => ["transaction.create", $unMouvement->id], 'method' => 'get']) !!}
+        {!! Form::open(['route' => ["transaction.create"], 'method' => 'get']) !!}
+        <input id="mouvement_id_mois{{ $actualMonth->copy()->subMonth($i)->month }}" name="mouvement_id" value="{{ $unMouvement->id }}" type="hidden" readonly>
+        <input id="{{ $unMouvement->id }}mois{{ $actualMonth->copy()->subMonth($i)->month }}" name="mois" value="{{ $actualMonth->copy()->subMonth($i)->month }}" type="hidden" readonly>
+        <input id="{{ $unMouvement->id }}annee{{ $actualMonth->copy()->subMonth($i)->month }}" name="annee" value="{{ $actualMonth->copy()->subMonth($i)->year }}" type="hidden" readonly>
         <button type="submit" class="btn btn-lg btn-block">
             <h6>
                 <div classe ="row">&nbsp</div>

@@ -138,10 +138,6 @@
                             <a href="{{ route("compte.index") }}"><i class="fa fa-bank"></i> <span>Mes comptes</span> <span class="pull-right-container"></span> </a>
                         </li>
 
-                        <li>
-                            <a href="{{ route("dashboard") }}"><i class="fa fa-genderless"></i> <span>Mono Link TODO</span> <span class="pull-right-container"></span> </a>
-                        </li>
-
                         <li class="header">Admin</li>
 
                         <li class="treeview">
