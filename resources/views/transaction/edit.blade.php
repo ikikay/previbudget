@@ -15,7 +15,4 @@
 
 @stop
 
-@section('script')
-<script src="{{ url('js/perso/jsDeleteButton.js') }}"></script>
-@stop
 @include('transaction.script')

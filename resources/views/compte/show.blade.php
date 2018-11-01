@@ -55,7 +55,7 @@ $nbrBoucle = -6;
                             <tr>
                                 <th class="text-center" style="width: 20%">
                                     <div classe ="row">&nbsp</div>
-                                    <div classe ="row">Total Depenses Fixes</div>
+                                    <div classe ="row">Total Dépenses Fixes</div>
 
                                 </th>
                                 @for ($i = 1; $i >= $nbrBoucle; $i--)
@@ -71,7 +71,7 @@ $nbrBoucle = -6;
                             <tr>
                                 <th class="text-center" style="width: 20%">
                                     <div classe ="row">&nbsp</div>
-                                    <div classe ="row">Total Depenses Variables</div>
+                                    <div classe ="row">Total Dépenses Variables</div>
                                 </th>
                                 @for ($i = 1; $i >= $nbrBoucle; $i--)
                                 <th class="text-center" style="width: 10%">
@@ -86,7 +86,7 @@ $nbrBoucle = -6;
                             <tr>
                                 <th class="text-center" style="width: 20%">
                                     <div classe ="row">&nbsp</div>
-                                    <div classe ="row">Total Depenses Occasionnelles</div>                                  
+                                    <div classe ="row">Total Dépenses Occasionnelles</div>                                  
                                 </th>
                                 @for ($i = 1; $i >= $nbrBoucle; $i--)
                                 <th class="text-center" style="width: 10%">
@@ -99,14 +99,17 @@ $nbrBoucle = -6;
 
                             <tr>
                                 <th class="text-center" style="width: 20%">
-                                    <div classe ="row">&nbsp</div>
-                                    <div classe ="row">Total</div>
+                                    <div classe ="row">Total Dépenses prévus</div>
+                                    <div classe ="row">Total Dépenses éffectif</div>
+                                    <div classe ="row">Total Dépenses / revenus</div>
+                                    <div classe ="row">Restant</div>
                                 </th>
                                 @for ($i = 1; $i >= $nbrBoucle; $i--)
                                 <th class="text-center" style="width: 10%">
                                     <div classe ="row"><p class="text-yellow">{{ $leCompte->sommeTotalPrevisionnelDuMois($actualMonth->copy()->subMonth($i)) }}€</p></div>
                                     <div classe ="row"><p class="text-green">{{ $leCompte->sommeTotalEffectifDuMois($actualMonth->copy()->subMonth($i)) }}€</p></div>
-                                    <div classe ="row"><p class="text-muted">{{ $leCompte->sommeTotalDuMois($actualMonth->copy()->subMonth($i)) }}€</p></div>
+                                    <div classe ="row"><p class="text-muted">{{ $leCompte->sommeTotalDuMois($actualMonth->copy()->subMonth($i)) }}€ / {{$leCompte->sommeRevenusDuMois($actualMonth->copy()->subMonth($i)) }}€</p></div>
+                                    <div classe ="row"><p class="text-muted"><b>{{ $leCompte->sommeRevenusMoinsDepensesDuMois($actualMonth->copy()->subMonth($i)) }}€</b></p></div>
                                 </th>
                                 @endfor
                             </tr>

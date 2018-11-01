@@ -1,4 +1,6 @@
 @section('script')
+<!-- Pour edition seulement -->
+<script src="{{ url('js/perso/jsDeleteButton.js') }}"></script>
 <!-- gijgo datepicker -->
 <script src="{{url('js/bootstrap-datepicker3-1.8.0.min.js') }}"></script>
 

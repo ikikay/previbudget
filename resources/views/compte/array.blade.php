@@ -6,8 +6,7 @@
         <input id="compte_id_mouvement{{ $unMouvement->id }}" name="compte_id" value="{{ $leCompte->id }}" type="hidden" readonly>
         <button type="submit" class="btn btn-outline-info btn-lg btn-block">
             <h6>             
-                <div classe ="row">{{ $unMouvement->libelle }}</div>
-                <div classe ="row">&nbsp</div>
+                {{ $unMouvement->libelle }}
             </h6>
         </button>
         {!! Form::close() !!}
@@ -20,8 +19,7 @@
         {!! Form::open(['route' => ["transaction.edit", $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id], 'method' => 'get']) !!}
         <button type="submit" class="btn bg-olive btn-lg btn-block">
             <h6>             
-                <div classe ="row">{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€</div>
-                <div classe ="row">le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d') }}</div>
+                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€, le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d/m/Y') }}
             </h6>
         </button>
         {!! Form::close() !!}
@@ -31,8 +29,7 @@
         {!! Form::open(['route' => ["transaction.edit", $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id], 'method' => 'get']) !!}
         <button type="submit" class="btn bg-orange btn-lg btn-block">
             <h6>
-                <div classe ="row">{{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_previsionnel }}€</div>
-                <div classe ="row">le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_previsionnel->format('d') }}</div>
+                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_previsionnel }}€  ({{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_previsionnel->format('d/m/Y') }})
             </h6>
         </button>
         {!! Form::close() !!}
@@ -46,7 +43,6 @@
         <input id="{{ $unMouvement->id }}annee{{ $actualMonth->copy()->subMonth($i)->month }}" name="annee" value="{{ $actualMonth->copy()->subMonth($i)->year }}" type="hidden" readonly>
         <button type="submit" class="btn btn-lg btn-block">
             <h6>
-                <div classe ="row">&nbsp</div>
                 <div classe ="row">&nbsp</div>
             </h6>
         </button>

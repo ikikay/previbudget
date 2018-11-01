@@ -173,33 +173,17 @@ class Compte extends Model {
 
     public function sommeTotalPrevisionnelDuMois($moisAnneeCarbone) {
         $somme = 0;
-        foreach ($this->mouvements as $unMouvement) {
-            if ($unMouvement->depense_id == 1) {
-                if (!$unMouvement->transactionDuMois($moisAnneeCarbone)->isEffectif()) {
-                    $somme = $somme - $unMouvement->transactionDuMois($moisAnneeCarbone)->montant_previsionnel;
-                }
-            } else {
-                if (!$unMouvement->transactionDuMois($moisAnneeCarbone)->isEffectif()) {
-                    $somme = $somme + $unMouvement->transactionDuMois($moisAnneeCarbone)->montant_previsionnel;
-                }
-            }
-        }
+        $somme = $somme + $this->sommeDepensesFixesPrevisionnelDuMois($moisAnneeCarbone);
+        $somme = $somme + $this->sommeDepensesVariablePrevisionnelDuMois($moisAnneeCarbone);
+        $somme = $somme + $this->sommeDepensesOccasionnellesPrevisionnelDuMois($moisAnneeCarbone);
         return $somme;
     }
 
     public function sommeTotalEffectifDuMois($moisAnneeCarbone) {
         $somme = 0;
-        foreach ($this->mouvements as $unMouvement) {
-            if ($unMouvement->depense_id == 1) {
-                if ($unMouvement->transactionDuMois($moisAnneeCarbone)->isEffectif()) {
-                    $somme = $somme - $unMouvement->transactionDuMois($moisAnneeCarbone)->montant_effectif;
-                }
-            } else {
-                if ($unMouvement->transactionDuMois($moisAnneeCarbone)->isEffectif()) {
-                    $somme = $somme + $unMouvement->transactionDuMois($moisAnneeCarbone)->montant_effectif;
-                }
-            }
-        }
+        $somme = $somme + $this->sommeDepensesFixesEffectifDuMois($moisAnneeCarbone);
+        $somme = $somme + $this->sommeDepensesVariableEffectifDuMois($moisAnneeCarbone);
+        $somme = $somme + $this->sommeDepensesOccasionnellesEffectifDuMois($moisAnneeCarbone);
         return $somme;
     }
 
@@ -207,6 +191,12 @@ class Compte extends Model {
         $somme = 0;
         $somme = $somme + $this->sommeTotalPrevisionnelDuMois($moisAnneeCarbone);
         $somme = $somme + $this->sommeTotalEffectifDuMois($moisAnneeCarbone);
+        return $somme;
+    }
+    
+    public function sommeRevenusMoinsDepensesDuMois($moisAnneeCarbone){
+        $somme = 0;
+        $somme = $somme + $this->sommeRevenusDuMois($moisAnneeCarbone) - $this->sommeTotalDuMois($moisAnneeCarbone);
         return $somme;
     }
 
