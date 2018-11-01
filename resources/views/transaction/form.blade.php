@@ -2,9 +2,11 @@
 if ($laTransaction->id) {
     $lesOptions = ['method' => 'put', 'url' => route('transaction.update', $laTransaction->id)];
     $action = "Modifier";
+    $edit = true;
 } else {
     $lesOptions = ['method' => 'post', 'url' => route('transaction.store')];
     $action = "Créer";
+    $edit = false;
 }
 $date = "dd/mm/yyyy";
 ?>
@@ -60,5 +62,11 @@ $date = "dd/mm/yyyy";
         {!! Form::submit($action, ['class'=> 'btn bg-' . $auth->color->color_item .' btn-lg btn-block']) !!}
 
         {!! Form::close()!!}
+
+        @if ($edit)
+        {!! Form::open(['route' => ["transaction.destroy", $laTransaction->id], 'method' => 'delete']) !!}
+        {!! Form::submit("Supprimer", ['class'=> 'jsDeleteButton btn btn-block btn-danger btn-lg']) !!}
+        {!! Form::close() !!}
+        @endif
     </div>
 </div>

@@ -31,12 +31,12 @@ Route::middleware('auth')->group(function () {
     
     //Mouvement
     Route::resource('mouvement', 'MouvementController')->except([
-        'index', 'show', 'update', 'destroy'
+        'index', 'show'
     ]);
     
     //Transaction
     Route::resource('transaction', 'TransactionController')->except([
-        'index', 'show', 'destroy'
+        'index', 'show'
     ]);
 });
 

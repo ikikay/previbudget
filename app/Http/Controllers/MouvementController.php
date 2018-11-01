@@ -81,8 +81,17 @@ class MouvementController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit(Request $request, $id) {
+        $auth = Auth::user()->load('color');
+
+        $leMouvement = Mouvement::find($id);
+        $lesDepenses = Depense::all();
+
+        return view('mouvement.edit')
+                        ->with('auth', $auth)
+                        ->with("lesDepenses", $lesDepenses)
+                        ->with("leMouvement", $leMouvement)
+                        ->with("compte_id", $request->get('compte_id'));
     }
 
     /**
@@ -93,7 +102,16 @@ class MouvementController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+        $this->validate($request, Mouvement::$rules);
+
+        $leMouvement = Mouvement::find($id);
+        $leMouvement->libelle = $request->get('libelle');
+        $leMouvement->depense()->associate($request->get('depense_id'));
+
+        $leMouvement->save();
+
+        $request->session()->flash('success', 'Le mouvement à été Modifié !');
+        return redirect()->route("compte.show", ['id' => $leMouvement->compte->id]);
     }
 
     /**
@@ -102,8 +120,13 @@ class MouvementController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request, $id) {
+        $leMouvement = Mouvement::find($id);
+        $id_compte  = $leMouvement->compte->id;
+        $leMouvement->delete();
+
+        $request->session()->flash('success', 'Le mouvement à été Supprimé !');
+        return redirect()->route("compte.show", ['id' => $id_compte]);
     }
 
 }

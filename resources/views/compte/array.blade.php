@@ -2,7 +2,15 @@
 <tr>
 
     <td class="text-center"id="maintd{{ $unMouvement->id }}">
-        {{ $unMouvement->libelle }}
+        {!! Form::open(['route' => ["mouvement.edit", $unMouvement->id], 'method' => 'get']) !!}
+        <input id="compte_id_mouvement{{ $unMouvement->id }}" name="compte_id" value="{{ $leCompte->id }}" type="hidden" readonly>
+        <button type="submit" class="btn btn-outline-info btn-lg btn-block">
+            <h6>             
+                <div classe ="row">{{ $unMouvement->libelle }}</div>
+                <div classe ="row">&nbsp</div>
+            </h6>
+        </button>
+        {!! Form::close() !!}
     </td>
 
     @for ($i = 1; $i >= -6; $i--)

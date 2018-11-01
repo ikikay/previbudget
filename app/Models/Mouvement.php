@@ -18,7 +18,7 @@ class Mouvement extends Model {
      * - - - - - static - - - - -  
      */
     public static $rules = [
-        'libelle' => 'required|min:4|max:20|regex:/^[\p{L}\s\-]+$/u',
+        'libelle' => 'required|min:4|max:40',
     ];
 
     /**

@@ -124,7 +124,7 @@ $nbrBoucle = -6;
                                 <td class="text-center" colspan="9">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            {!! Form::open(['route' => ["mouvement.create"], 'method' => 'post']) !!}
+                                            {!! Form::open(['route' => "mouvement.create", 'method' => 'get']) !!}
                                             <input id="compte_id" name="compte_id" value="{{ $leCompte->id }}" type="hidden" readonly>
                                             <button type="submit" class="btn bg-{{ $auth->color->color_item }} btn-lg btn-block">Nouveau mouvement</button>
                                             {!! Form::close() !!}

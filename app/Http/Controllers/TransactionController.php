@@ -128,8 +128,13 @@ class TransactionController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request, $id) {
+        $laTransaction = Transaction::find($id);
+        $id_compte  = $laTransaction->mouvement->compte->id;
+        $laTransaction->delete();
+
+        $request->session()->flash('success', 'La transaction à été Supprimé !');
+        return redirect()->route("compte.show", ['id' => $id_compte]);
     }
 
 }
