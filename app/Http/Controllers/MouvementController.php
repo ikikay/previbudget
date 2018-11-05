@@ -33,7 +33,7 @@ class MouvementController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
 
         $leMouvement = new Mouvement();
         $lesDepenses = Depense::all();
@@ -54,12 +54,12 @@ class MouvementController extends Controller {
     public function store(Request $request) {
         $this->validate($request, Mouvement::$rules);
 
-        $leMouvement = new Mouvement();
-        $leMouvement->libelle = $request->get('libelle');
-        $leMouvement->depense()->associate($request->get('depense_id'));
-        $leMouvement->compte()->associate($request->get('compte_id'));
+            $leMouvement = new Mouvement();
+            $leMouvement->libelle = $request->get('libelle');
+            $leMouvement->depense()->associate($request->get('depense_id'));
+            $leMouvement->compte()->associate($request->get('compte_id'));
 
-        $leMouvement->save();
+            $leMouvement->save();
 
         $request->session()->flash('success', 'Le mouvement à été Ajouté !');
         return redirect()->route("compte.show", ['id' => $leMouvement->compte->id]);
@@ -82,7 +82,7 @@ class MouvementController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
 
         $leMouvement = Mouvement::find($id);
         $lesDepenses = Depense::all();
@@ -122,7 +122,7 @@ class MouvementController extends Controller {
      */
     public function destroy(Request $request, $id) {
         $leMouvement = Mouvement::find($id);
-        $id_compte  = $leMouvement->compte->id;
+        $id_compte = $leMouvement->compte->id;
         $leMouvement->delete();
 
         $request->session()->flash('success', 'Le mouvement à été Supprimé !');

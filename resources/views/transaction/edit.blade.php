@@ -5,7 +5,7 @@
 @section('title')
 <h1>
     Modication d'une transaction
-    <small>- Modication d'une transaction</small>
+    <small>- {{ $laTransaction->mouvement->libelle }}</small>
 </h1>
 @stop
 

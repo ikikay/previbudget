@@ -55,9 +55,23 @@ $date = "dd/mm/yyyy";
                             <input type="text" class="form-control pull-right datepicker" id="datepicker_effectif" name="dte_effectif" value="{{$date}}">
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+
+        @if (!$edit)
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <div class="box-body">
+
+                    <span id="nbrMoisSliderlabel">Nombres de mois : <span id="nbrMoisSliderspan">1</span></span>
+                    <input id="nbrMoisSlider" name="nbrMois" type="text" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="1" data-slider-ticks="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]" />
+
+                </div>
+            </div>
+        </div>
+        @endif
 
         {!! Form::submit($action, ['class'=> 'btn bg-' . $auth->color->color_item .' btn-lg btn-block']) !!}
 

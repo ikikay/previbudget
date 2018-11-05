@@ -24,7 +24,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $lesComptes = Compte::where('user_id', $auth->id)->get();
 
         return view('compte.index')
@@ -38,7 +38,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $leCompte = new Compte();
 
         return view('compte.create')
@@ -53,7 +53,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $this->validate($request, Compte::$rules);
 
         $leCompte = new Compte();
@@ -73,7 +73,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $leCompte = Compte::with('mouvements', 'mouvements.transactions')->find($id);
         $leCompte->mouvements->sortBy('depense_id');
         $lesMouvementsRevenus = $leCompte->mouvements->where('depense_id', 1)->sortBy("libelle");
@@ -101,7 +101,7 @@ class CompteController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $leCompte = Compte::find($id);
 
         return view('compte.edit')

@@ -19,7 +19,7 @@
         {!! Form::open(['route' => ["transaction.edit", $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->id], 'method' => 'get']) !!}
         <button type="submit" class="btn bg-olive btn-lg btn-block">
             <h6>             
-                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€, le {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d/m/Y') }}
+                {{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->montant_effectif }}€  ({{ $unMouvement->transactionDuMois($actualMonth->copy()->subMonth($i))->dte_effectif->format('d/m/Y') }})
             </h6>
         </button>
         {!! Form::close() !!}

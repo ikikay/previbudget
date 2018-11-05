@@ -18,9 +18,9 @@
 <script src="{{ url('js/perso/jsDeleteButton.js') }}"></script>
 
 <script>
-    $(document).ready(function () {
-        var type = "{{ $leMouvement->depense->id }}";
-        $('select:first').val(type);
-    });
+$(document).ready(function () {
+    var type = "{{ $leMouvement->depense->id }}";
+    $('select:first').val(type);
+});
 </script>
 @stop

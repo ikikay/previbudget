@@ -27,7 +27,7 @@ class HomeController extends Controller {
     }
 
     public function toDashboard() {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
 
         return view('dashboard')
                         ->with('auth', $auth);

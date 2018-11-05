@@ -3,6 +3,8 @@
 <script src="{{ url('js/perso/jsDeleteButton.js') }}"></script>
 <!-- gijgo datepicker -->
 <script src="{{url('js/bootstrap-datepicker3-1.8.0.min.js') }}"></script>
+<!-- bootstrap-slider -->
+<script src="{{ url('js/bootstrap-slider.js') }}"></script>
 
 <script>
 $(document).ready(function () {
@@ -23,11 +25,24 @@ $(document).ready(function () {
         autoclose: true,
         language: "fr"
     });
+    
     var moisPreselectionne = new Date();
     moisPreselectionne.setDate({{ $jours }});
     moisPreselectionne.setMonth({{ $mois }} -1);
     moisPreselectionne.setFullYear({{ $annee }});
     $(".datepicker").datepicker("update", moisPreselectionne);
+    
+    $('#nbrMoisSlider').slider({
+        formatter: function (value) {
+            return 'Nombres de mois : ' + value;
+        }
+    });
+
+    $("#nbrMoisSlider").slider();
+    $("#nbrMoisSlider").on("slide", function (slideEvt) {
+        $("#nbrMoisSliderspan").text(slideEvt.value);
+    });
+   
 });
 
 $(document).on('click', '#input_datepicker_previsionnel', (function () {

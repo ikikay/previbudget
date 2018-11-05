@@ -25,7 +25,6 @@ if ($leMouvement->id) {
         <option value="{{ $uneDepense->id }}">{{ $uneDepense->name }}</option>
         @endforeach
     </select>
-
 </div>
 
 </br>

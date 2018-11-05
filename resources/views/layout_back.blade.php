@@ -138,6 +138,14 @@
                             <a href="{{ route("compte.index") }}"><i class="fa fa-bank"></i> <span>Mes comptes</span> <span class="pull-right-container"></span> </a>
                         </li>
 
+                        <li class="header">Accès rapides aux comptes</li>
+                        
+                        @foreach ($auth->comptes as $unCompte)
+                        <li>
+                            <a href="{{route('compte.show', ['id' => $unCompte->id])}}"><i class="fa fa-bank"></i> <span>{{ $unCompte->libelle }}</span> <span class="pull-right-container"></span> </a>
+                        </li>
+                        @endforeach
+
                         <li class="header">Admin</li>
 
                         <li class="treeview">

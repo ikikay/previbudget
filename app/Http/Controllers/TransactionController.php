@@ -34,7 +34,7 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
 
         $laTransaction = new Transaction();
         $laTransaction->montant_effectif = 0;
@@ -57,16 +57,24 @@ class TransactionController extends Controller {
     public function store(Request $request) {
         $this->validate($request, Transaction::$rules);
 
-        $laTransaction = new Transaction();
-        $laTransaction->dte_effectif = Carbon::create(2000, 1, 1, 0, 0, 0);
-        $laTransaction->dte_previsionnel = Carbon::createFromFormat('d/m/Y', $request->get('dte_previsionnel'));
-        $laTransaction->montant_effectif = 0;
-        $laTransaction->montant_previsionnel = $request->get('montant_previsionnel');
-        $laTransaction->mouvement()->associate($request->get('mouvement_id'));
+        for ($i = 0; $i > ($request->get('nbrMois') * -1); $i--) {
+            $laTransaction = new Transaction();
+            $laTransaction->dte_effectif = Carbon::create(2000, 1, 1, 0, 0, 0);
+            $datePrevu = Carbon::createFromFormat('d/m/Y', $request->get('dte_previsionnel'));
+            $datePrevu->subMonth($i);
+            $laTransaction->dte_previsionnel = $datePrevu;
+            $laTransaction->montant_effectif = 0;
+            $laTransaction->montant_previsionnel = $request->get('montant_previsionnel');
+            $laTransaction->mouvement()->associate($request->get('mouvement_id'));
 
-        $laTransaction->save();
-
-        $request->session()->flash('success', 'La transaction à été Ajouté !');
+            $laTransaction->save();
+        }
+        if($request->get('nbrMois') > 0){
+            $request->session()->flash('success', 'Les ' . $request->get('nbrMois') . ' transactions ont été Ajouté !');
+        }else{
+            $request->session()->flash('success', 'La transaction à été Ajouté !');
+        }
+        
         return redirect()->route("compte.show", ['id' => $laTransaction->mouvement->compte->id]);
     }
 
@@ -87,7 +95,7 @@ class TransactionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $laTransaction = Transaction::find($id);
 
         return view('transaction.edit')
@@ -130,7 +138,7 @@ class TransactionController extends Controller {
      */
     public function destroy(Request $request, $id) {
         $laTransaction = Transaction::find($id);
-        $id_compte  = $laTransaction->mouvement->compte->id;
+        $id_compte = $laTransaction->mouvement->compte->id;
         $laTransaction->delete();
 
         $request->session()->flash('success', 'La transaction à été Supprimé !');

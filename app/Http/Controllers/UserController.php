@@ -24,7 +24,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $lesUsers = User::all();
 
         return view('user.index')
@@ -38,7 +38,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $leUser = new User();
         $lesCouleurs = Color::all();
 
@@ -90,7 +90,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $auth = Auth::user()->load('color');
+        $auth = Auth::user()->load('color')->load('comptes');
         $leUser = User::with('color')->find($id);
         $lesCouleurs = Color::all();
 
